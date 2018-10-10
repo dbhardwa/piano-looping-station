@@ -1,0 +1,55 @@
+$font-stack:    monospace, Helvetica, sans-serif;
+$primary-color: black;
+
+$white-keys-color: #f3f3f3;
+$black-keys-color: #6d6d6d;
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+
+#piano {
+  position: relative;
+  border: 1px solid black;
+  padding: 10px;
+  width: fit-content;
+}
+
+.whiteKey {
+  background-color: $white-keys-color;
+  height: 200px;
+  width: 50px;
+  border: 1px solid black;
+  display: inline-block;
+  border-radius: 0px 0px 10px 10px;
+  // margin-right: -7px;
+}
+
+.blackKey {
+  background-color: $black-keys-color;
+  height: 125px;
+  width: 30px;
+  border: 1px solid black;
+  display: inline-block;
+  border-radius: 0px 0px 10px 10px;
+  top: -75px;
+  position: relative;
+  // left: -5px;
+}
+
+.whiteKey:hover {
+  background-color: #ebebff;
+}
+
+.whiteKey:active {
+  background-color: #ccccff;
+}
+
+.blackKey:hover {
+  background-color: #ebebff;
+}
+
+.blackKey:active {
+  background-color: #ccccff;
+}
