@@ -15,6 +15,9 @@
 */
 
 export default function setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet) {
+  startRangeSelect.innerHTML = '';
+  endRangeSelect.innerHTML = '';
+
   var musicalNoteOptions = [],
       octave = 0;
 
@@ -35,27 +38,30 @@ export default function setPianoRangeFields(startNote, endNote, startRangeSelect
       i = -1;
   }
 
-  let afterStartNoteFlag = false;
-
+  // Starting note range.
+  let disableRestOfOptions = false;
   for (let i = 0; i < musicalNoteOptions.length; i++) {
-    if (musicalNoteOptions[i] === endNote) {
-      endRangeSelect.innerHTML += `<option selected="selected" value="${musicalNoteOptions[i]}">${musicalNoteOptions[i]}</option>`;
-      for (let j = ++i; j < musicalNoteOptions.length; j++) {
-        startRangeSelect.innerHTML += `<option disabled value="${musicalNoteOptions[j]}">${musicalNoteOptions[j]}</option>`;
-      }
-    }
-
-    if (afterStartNoteFlag === true) {
-      endRangeSelect.innerHTML += `<option value="${musicalNoteOptions[i]}">${musicalNoteOptions[i]}</option>`;
-      continue;
-    } else if (musicalNoteOptions[i] === startNote) {
+    if (musicalNoteOptions[i] === startNote) {
       startRangeSelect.innerHTML += `<option selected="selected" value="${musicalNoteOptions[i]}">${musicalNoteOptions[i]}</option>`;
-      afterStartNoteFlag = true;
-      continue;
+    } else if (musicalNoteOptions[i] === endNote || disableRestOfOptions) {
+      startRangeSelect.innerHTML += `<option disabled value="${musicalNoteOptions[i]}">${musicalNoteOptions[i]}</option>`;
+      disableRestOfOptions = true;
     } else {
       startRangeSelect.innerHTML += `<option value="${musicalNoteOptions[i]}">${musicalNoteOptions[i]}</option>`;
     }
+  }
 
-    endRangeSelect.innerHTML += `<option disabled value="${musicalNoteOptions[i]}">${musicalNoteOptions[i]}</option>`;
+  // Ending note range.
+  let enableRestOfOptions = false;
+  for (let i = 0; i < musicalNoteOptions.length; i++) {
+    if (musicalNoteOptions[i] === endNote) {
+      endRangeSelect.innerHTML += `<option selected="selected" value="${musicalNoteOptions[i]}">${musicalNoteOptions[i]}</option>`;
+    } else if (enableRestOfOptions) {
+      endRangeSelect.innerHTML += `<option value="${musicalNoteOptions[i]}">${musicalNoteOptions[i]}</option>`;
+    } else {
+      endRangeSelect.innerHTML += `<option disabled value="${musicalNoteOptions[i]}">${musicalNoteOptions[i]}</option>`;
+      if (musicalNoteOptions[i] === startNote)
+        enableRestOfOptions = true;
+    }
   }
 }

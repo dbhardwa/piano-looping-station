@@ -28,7 +28,7 @@ var synth = new Tone.Synth({
 
 // Default values for first and last note.
 var startNote = 'C4',
-    endNote = 'F5';
+    endNote = 'D7';
 
 // startRange and endRange <select> DOM Elements.
 var startRangeSelect = document.getElementById('startRange'),
@@ -36,6 +36,19 @@ var startRangeSelect = document.getElementById('startRange'),
 
 // Initializes the select range fields.
 setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
+
+document.getElementById('startRange').addEventListener('change', (e) => {
+  startNote = e.target.value;
+  setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
+});
+
+document.getElementById('endRange').addEventListener('change', (e) => {
+  endNote = e.target.value;
+  setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
+});
+
+
+// NEXT THING TODO: SET THE RUN THE FUNCTION THAT RESETS THE PIANO RANGE KEYS SO IT BECOMES RESPONSIVE.\
 
 // Builds the pianoRange array to capture all notes from the first to last.
 var pianoRange = createPianoRangeArray(startNote, endNote, musicalAlphabet);
@@ -65,7 +78,6 @@ document.getElementById('piano').addEventListener('mousedown', (e) => {
 document.getElementById('piano').addEventListener('mouseup', (e) => {
   if (e.target.id !== "piano") {
     synth.triggerRelease();
-    console.log('off');
   }
 });
 
@@ -78,7 +90,6 @@ document.getElementById('piano').addEventListener('mouseup', (e) => {
 
 /*
 TODO:
-- Set a click event for all keys, then use e.target to find the id and produce the corresponding sound.
 - We need both click and mousedown events to account for moving from one note to the next with the mouse button still held down.
 - Need to add keyboard hotkeys for playing notes, using horizontal arrow keys to shift those hot keys...
 - Continue modularizing.
