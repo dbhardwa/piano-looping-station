@@ -26,66 +26,248 @@ var synth = new Tone.Synth({
 
 
 
-// Default values for first and last note.
-var startNote = 'C4',
-    endNote = 'D7';
+// // Default values for first and last note.
+// var startNote = 'C4',
+//     endNote = 'D7',
+// 		pianoRange = [];
+//
+// // startRange and endRange <select> DOM Elements.
+// var startRangeSelect = document.getElementById('startRange'),
+//     endRangeSelect = document.getElementById('endRange');
+//
+// // Initializes the select range fields.
+// setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
+//
+// document.getElementById('startRange').addEventListener('change', (e) => {
+//   startNote = e.target.value;
+//   setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
+// 	pianoRange = createPianoRangeArray(startNote, endNote, musicalAlphabet);
+// });
+//
+// document.getElementById('endRange').addEventListener('change', (e) => {
+//   endNote = e.target.value;
+//   setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
+// 	pianoRange = createPianoRangeArray(startNote, endNote, musicalAlphabet);
+// });
 
-// startRange and endRange <select> DOM Elements.
-var startRangeSelect = document.getElementById('startRange'),
-    endRangeSelect = document.getElementById('endRange');
+// const musicalAlphabet = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
-// Initializes the select range fields.
-setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
+const PianoApp = {
+	musicalAlphabet: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+	// Default start and end notes.
+	startNote: "C4",
+	endNote: "C5",
 
-document.getElementById('startRange').addEventListener('change', (e) => {
-  startNote = e.target.value;
-  setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
-});
+	init: function() {
+		this.loadNoteRanges();
+		this.loadPiano();
+		this.bindEvents();
+	},
 
-document.getElementById('endRange').addEventListener('change', (e) => {
-  endNote = e.target.value;
-  setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
-});
+	updateRangesAndPiano: function() {
+		this.loadNoteRanges();
+		this.loadPiano();
+	},
+
+	bindEvents: function() {
+		// Note range <select> options.
+		document.getElementById('startRange').addEventListener('change', (e) => {
+			this.startNote = e.target.value;
+			this.updateRangesAndPiano();
+		});
+
+		document.getElementById('endRange').addEventListener('change', (e) => {
+		  this.endNote = e.target.value;
+			this.updateRangesAndPiano();
+		});
+
+		// Piano keys events for triggering and terminating sounds.
+		document.getElementById('piano').addEventListener('mousedown', (e) => {
+			if (e.target.id !== "piano") {
+				synth.triggerAttack(e.target.id);
+				console.log('Playing note: ' + e.target.id);
+			}
+		});
+
+		document.getElementById('piano').addEventListener('mouseup', (e) => {
+			// Needs another event to account for mouse leaving.
+			if (e.target.id !== "piano") {
+				synth.triggerRelease();
+			}
+		});
+
+	},
+
+	loadNoteRanges: function() {
+		// startRange and endRange <select> DOM Elements.
+		var startRangeSelect = document.getElementById('startRange'),
+		    endRangeSelect = document.getElementById('endRange');
+
+		setPianoRangeFields(this.startNote, this.endNote, startRangeSelect, endRangeSelect, this.musicalAlphabet);
+	},
+
+	loadPiano: function() {
+		var pianoRange = [];
+
+		// Builds the pianoRange array to capture all notes from the first to last.
+		pianoRange = createPianoRangeArray(this.startNote, this.endNote, this.musicalAlphabet);
+		console.log(pianoRange);
+
+		var pianoKeys = ``;
+
+		pianoRange.forEach((currentNote) => {
+		  if (currentNote[1] === "#") {
+		    pianoKeys += `<div class="blackKey pianoKeys" id="${currentNote}"></div> \n`;
+		  } else {
+		    pianoKeys += `<div class="whiteKey pianoKeys" id="${currentNote}"></div> \n`;
+		  }
+		});
+
+		document.getElementById('piano').innerHTML = pianoKeys;
+	}
+}
+
+PianoApp.init();
 
 
-// NEXT THING TODO: SET THE RUN THE FUNCTION THAT RESETS THE PIANO RANGE KEYS SO IT BECOMES RESPONSIVE.\
-
-// Builds the pianoRange array to capture all notes from the first to last.
-var pianoRange = createPianoRangeArray(startNote, endNote, musicalAlphabet);
-console.log(pianoRange);
-
-var pianoKeys = ``;
-
-pianoRange.forEach((currentNote) => {
-  if (currentNote[1] === "#") {
-    pianoKeys += `<div class="blackKey pianoKeys" id="${currentNote}"></div> \n`;
-  } else {
-    pianoKeys += `<div class="whiteKey pianoKeys" id="${currentNote}"></div> \n`;
-  }
-});
-
-document.getElementById('piano').innerHTML = pianoKeys;
+// var time = 0;
+// setInterval(() => {
+// 	time++;
+// 	if (time === 5000) {
+// 		console.log('5 sec is up');
+// 	}
+// }, 1);
 
 
+var start = Date.now();
+var millis;
 
-document.getElementById('piano').addEventListener('mousedown', (e) => {
-  if (e.target.id !== "piano") {
-    synth.triggerAttack(e.target.id);
-    console.log('Playing note: ' + e.target.id);
-  }
-});
-
-document.getElementById('piano').addEventListener('mouseup', (e) => {
-  if (e.target.id !== "piano") {
-    synth.triggerRelease();
-  }
-});
+setInterval(function() {
+  millis = Date.now() - start;
+  // console.log("ms elapsed = " + Math.floor(millis/1));
+}, 1);
 
 
 
-
-
-
+// class LoadNoteRanges {
+// 	constructor() {
+// 		if (!instance) {
+// 			instance = this;
+// 		}
+//
+// 		const musicalAlphabet = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+//
+// 		// startRange and endRange <select> DOM Elements.
+// 		var startRangeSelect = document.getElementById('startRange'),
+// 		    endRangeSelect = document.getElementById('endRange');
+//
+// 		var startNote = 'C4',
+// 		    endNote = 'D7',
+// 				pianoRange = [];
+//
+// 		setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
+//
+//
+//
+// 		this.mountPianoKeys(createPianoRangeArray(startNote, endNote, musicalAlphabet));
+//
+// 		return instance;
+// 	}
+//
+// }
+//
+//
+// // Builds the pianoRange array to capture all notes from the first to last.
+// pianoRange = createPianoRangeArray(startNote, endNote, musicalAlphabet);
+// console.log(pianoRange);
+//
+// var pianoKeys = ``;
+//
+// pianoRange.forEach((currentNote) => {
+//   if (currentNote[1] === "#") {
+//     pianoKeys += `<div class="blackKey pianoKeys" id="${currentNote}"></div> \n`;
+//   } else {
+//     pianoKeys += `<div class="whiteKey pianoKeys" id="${currentNote}"></div> \n`;
+//   }
+// });
+//
+// document.getElementById('piano').innerHTML = pianoKeys;
+//
+//
+//
+// document.getElementById('piano').addEventListener('mousedown', (e) => {
+//   if (e.target.id !== "piano") {
+//     synth.triggerAttack(e.target.id);
+//     console.log('Playing note: ' + e.target.id);
+//   }
+// });
+//
+// document.getElementById('piano').addEventListener('mouseup', (e) => {
+//   if (e.target.id !== "piano") {
+//     synth.triggerRelease();
+//   }
+// });
+//
+//
+//
+//
+//
+// // function init() {
+// // 	setPianoRangeFields(startNote, endNote, startRangeSelect, endRangeSelect, musicalAlphabet);
+// // 	pianoRange = createPianoRangeArray(startNote, endNote, musicalAlphabet);
+// // 	pianoRange.forEach((currentNote) => {
+// // 	  if (currentNote[1] === "#") {
+// // 	    pianoKeys += `<div class="blackKey pianoKeys" id="${currentNote}"></div> \n`;
+// // 	  } else {
+// // 	    pianoKeys += `<div class="whiteKey pianoKeys" id="${currentNote}"></div> \n`;
+// // 	  }
+// // 	});
+// //
+// // 	document.getElementById('piano').innerHTML = pianoKeys;
+// // }
+//
+// class LoadPiano {
+// 	constructor() {
+// 		if (!instance) {
+// 			instance = this;
+// 		}
+//
+// 		const musicalAlphabet = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+//
+// 		// startRange and endRange <select> DOM Elements.
+// 		var startRangeSelect = document.getElementById('startRange'),
+// 		    endRangeSelect = document.getElementById('endRange');
+//
+// 		this.mountPianoKeys(createPianoRangeArray(startNote, endNote, musicalAlphabet));
+//
+// 		return instance;
+// 	}
+//
+// 	mountPianoKeys(pianoRange) {
+// 		let pianoKeys = ``;
+//
+// 		pianoRange.forEach((currentNote) => {
+// 			if (currentNote[1] === "#") {
+// 				pianoKeys += `<div class="blackKey pianoKeys" id="${currentNote}"></div> \n`;
+// 			} else {
+// 				pianoKeys += `<div class="whiteKey pianoKeys" id="${currentNote}"></div> \n`;
+// 			}
+// 		});
+//
+// 		document.getElementById('piano').addEventListener('mousedown', (e) => {
+// 		  if (e.target.id !== "piano") {
+// 		    synth.triggerAttack(e.target.id);
+// 		    console.log('Playing note: ' + e.target.id);
+// 		  }
+// 		});
+//
+// 		document.getElementById('piano').addEventListener('mouseup', (e) => {
+// 		  if (e.target.id !== "piano") {
+// 		    synth.triggerRelease();
+// 		  }
+// 		});
+// 	}
+// }
 
 
 /*
