@@ -1,58 +1,142 @@
-$font-stack:    monospace, Helvetica, sans-serif;
+$font-stack: Helvetica, sans-serif;
+$font-color: #5B5B5B;
+
 $primary-color: black;
 
+$red-recording-color: #FF7171;
+
+
 $white-keys-color: #f3f3f3;
-$black-keys-color: #6d6d6d;
+$black-keys-color: #777777;
 
 body {
   font: 100% $font-stack;
-  color: $primary-color;
+  color: $font-color;
 }
 
-#piano {
-  position: relative;
-  border: 1px solid black;
-  padding: 10px;
-  width: fit-content;
-  // max-width: 500px;
-  // height: 300px;
-  // overflow:hidden;
+header {
+  h1 {
+    font-weight: bold;
+    font-size: 2em;
+    margin: 0;
+  }
+
+  h2 {
+    font-weight: lighter;
+    font-size: 1em;
+    margin: 0;
+  }
+
+  span {
+    color: $red-recording-color;
+  }
 }
+
+#synthesizer {
+
+  user-select: none;
+
+  border: 1px solid #696969;
+  padding: 1em;
+  max-height: 16em;
+  margin: 2em 5%;
+  display: flex;
+  // flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  #piano {
+    position: relative;
+    display: inline-block;
+    // max-width: 80%;
+    max-height: 17em;
+    display: flex;
+    flex-wrap: nowrap;
+    // flex-direction: row;
+    // overflow-y: none;
+    // overflow-x: auto;
+    // white-space: nowrap;
+  }
+
+  #control-panel {
+    border: 1px solid $black-keys-color;
+    padding: 1em;
+    width: 4em;
+    height: 14em;
+    // float: right;
+    // display: inline-block;
+    margin: 0em 1em;
+  }
+
+}
+
+
+.pianoKeys {
+  position: relative;
+  float: left;
+}
+
+// not c or f....
+.pianoKeys[id*='G'],
+.pianoKeys[id*='A'],
+.pianoKeys[id*='E'],
+.pianoKeys[id*='D'],
+.pianoKeys[id*='B'] {
+  margin: 0 0 0 -1em;
+}
+
 
 .whiteKey {
-  background-color: $white-keys-color;
-  height: 200px;
-  width: 50px;
-  border: 1px solid black;
-  display: inline-block;
-  border-radius: 0px 0px 10px 10px;
+  // margin:0 0 0 -1em;
+  // background-color: $white-keys-color;
+  // height: 200px;
+  // width: 50px;
+  // border: 1px solid black;
+  // display: inline-block;
+  // border-radius: 0px 0px 10px 10px;
   // margin-right: -7px;
+
+  height: 16em;
+  width: 3.5em;
+  z-index: 1;
+  // border-left: 1px solid #777777;
+  // border-bottom: 1px solid #777777;
+  border: 1px solid #777777;
+  border-radius: 0 0 15px 15px;
+  background: #FBFBFB;
 }
 
 .blackKey {
-  background-color: $black-keys-color;
-  height: 125px;
-  width: 30px;
-  border: 1px solid black;
-  display: inline-block;
-  border-radius: 0px 0px 10px 10px;
-  top: -75px;
-  position: relative;
-  // left: -5px;
+  height: 10em;
+  width: 2em;
+  margin: 0 0 0 -1em;
+  z-index: 2;
+  border-radius: 0 0 10px 10px;
+  background: $black-keys-color;
 }
 
-.whiteKey:hover {
-  background-color: #ebebff;
+.whiteKey:hover, .blackKey:hover {
+  background-color: #AFCBFF;
 }
 
-.whiteKey:active {
-  background-color: #ccccff;
+// .whiteKey:active, .blackKey:active {
+//   background-color: #72A5FF;
+// }
+
+.active {
+  background-color: #72A5FF !important;
+
 }
 
-.blackKey:hover {
-  background-color: #ebebff;
+
+
+button {
+  border-style: none;
+  border: 1px solid $black-keys-color;
+  background-color: white;
+  padding: 0.7em;
 }
 
-.blackKey:active {
-  background-color: #ccccff;
+button:hover {
+  background-color: #CBCBCB;
 }

@@ -8,15 +8,27 @@
     <meta name="description" content="Piano app with more features incoming...">
   </head>
   <body>
-    <!-- <div>Piano</div> -->
+    <header>
+      <h1><span>Loop</span>ing Station</h1>
+      <h2>By Devansh</h2>
+    </header>
 
-    <div id="piano"></div>
+    <div id="synthesizer">
+      <div id="piano"></div>
 
-    <div>
-      <select id="startRange"></select>
-      <select id="endRange"></select>
+      <div id="control-panel">
+        <select id="startRange"></select>
+        <select id="endRange"></select>
+      </div>
     </div>
 
-    <button id="record">RECORD</button>
+    <button id="record">
+      <svg width="20px" height="20px">
+        <circle fill="#FF7171" cx="10" cy="10" r="9"></circle>
+      </svg>
+    </button>
+    <button id="notesPlayedLoop">NOTES PLAYED LOOP</button>
+
+    <div id="loopingStation"></div>
   </body>
 </html>

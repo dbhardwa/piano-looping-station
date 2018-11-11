@@ -1,4 +1,5 @@
 import Tone from "tone";
+import * as d3 from "d3";
 
 const recordButton = document.getElementById('record');
 let keyLapseTime = 0;
@@ -24,8 +25,6 @@ const synth = new Tone.Synth({
 }).toMaster();
 
 
-
-
 const handleRecord = function() {
 	recording = !recording;
 
@@ -38,6 +37,12 @@ const handleRecord = function() {
 	let timer = setInterval(() => {
 		// Gives time (ms) since the record button was pressed.
 		millis = Date.now() - start;
+
+		if (millis % 1000 === 0) {
+
+
+		}
+
 
 		if (!recording || millis > 10000) {
 			console.log('timer over');
@@ -64,10 +69,10 @@ const checkIfRecording = function(millis) {
 	}
 }
 
-const handleKeyPress = function(e) {
-	if (e.target.id !== "piano") {
-		synth.triggerAttack(e.target.id);
-		console.log('Playing note: ' + e.target.id);
+const handleKeyPress = function(keyPressed) {
+	if (keyPressed !== "piano") {
+		synth.triggerAttack(keyPressed);
+		// console.log('Playing note: ' + keyPressed);
 
 		mouseDownStartTime = Date.now();
 	}
@@ -98,5 +103,6 @@ const logKey = (note, timing, duration) => {
 export {
   handleKeyPress,
   handleRecord,
-  handleKeyRelease
+  handleKeyRelease,
+	notesPlayedLoop
 }

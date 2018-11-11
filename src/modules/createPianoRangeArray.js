@@ -12,14 +12,17 @@
 
 */
 
+var pianoRange = [],
+    lastIndex,
+    currentNote, // This is the current note in the array (i.e. C#4, C4).
+    currentOctave, // This is the current letter (i.e. C).
+    currentLetter,
+    updatedNote = '',
+    updatedLetter = '';
+
 export default function setPianoRangeSelectFields(startNote, endNote, musicalAlphabet) {
-  var pianoRange = [startNote],
-      lastIndex,
-      currentNote, // This is the current note in the array (i.e. C#4, C4).
-      currentOctave = startNote[1], // This is the current letter (i.e. C).
-      currentLetter,
-      updatedNote = '',
-      updatedLetter = '';
+  pianoRange = [startNote];
+  currentOctave = startNote[1];
 
   while (true) {
     lastIndex = pianoRange.length - 1;
