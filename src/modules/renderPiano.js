@@ -4,10 +4,10 @@ import createPianoRangeArray from "./createPianoRangeArray";
 let pianoRange = [],
 		pianoKeys = ``;
 
-export default function renderPiano(startNote, endNote, musicalAlphabet) {
+export default function renderPiano(startNote, endNote) {
 	pianoKeys = ``;
-	
-	pianoRange = createPianoRangeArray(startNote, endNote, musicalAlphabet);
+
+	pianoRange = createPianoRangeArray(startNote, endNote);
 	pianoRange.forEach((currentNote) => {
 	  if (currentNote[1] === "#")
 	    pianoKeys += `<div class="blackKey pianoKeys" id="${currentNote}"></div> \n`;

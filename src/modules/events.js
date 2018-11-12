@@ -38,7 +38,6 @@ const handleRecord = function() {
 	}
 
 	let start = Date.now();
-			// millis = 0;
 
 	let timer = setInterval(() => {
 		// Gives time (ms) since the record button was pressed.

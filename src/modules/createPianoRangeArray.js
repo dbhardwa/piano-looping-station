@@ -5,12 +5,13 @@
   Parameters:
     - startNote: Starting note for beginning of array (Type: String).
     - endNote: Ending note for end of array (Type: String).
-    - musicalAlphabet: Standard musical alphabet from C --> B (Type: Array).
 
   Purpose:
     - Returns a pianoRange array which holds all notes (white and black) within the desired note range.
 
 */
+
+import { musicalAlphabet } from "../index";
 
 var pianoRange = [],
     lastIndex,
@@ -20,7 +21,7 @@ var pianoRange = [],
     updatedNote = '',
     updatedLetter = '';
 
-export default function createPianoRangeArray(startNote, endNote, musicalAlphabet) {
+export default function createPianoRangeArray(startNote, endNote) {
   pianoRange = [startNote];
   currentOctave = startNote[1];
 
