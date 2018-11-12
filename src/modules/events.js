@@ -25,48 +25,38 @@ const synth = new Tone.Synth({
 }).toMaster();
 
 
+let millis = 0;
+
+const recordIcon = document.querySelector('#record svg');
+
 const handleRecord = function() {
 	recording = !recording;
 
-	if (recording)
+	if (recording) {
 		notesPlayedLoop = [];
+		recordIcon.classList.add('blinking');
+	}
 
-	let start = Date.now(),
-			millis = 0;
+	let start = Date.now();
+			// millis = 0;
 
 	let timer = setInterval(() => {
 		// Gives time (ms) since the record button was pressed.
 		millis = Date.now() - start;
-
-		if (millis % 1000 === 0) {
-
-
-		}
-
+  
+		if (millis % 1000 === 0) {}
 
 		if (!recording || millis > 10000) {
-			console.log('timer over');
 			clearInterval(timer);
 			recording = false;
+			recordIcon.classList.remove('blinking');
+			console.log(notesPlayedLoop);
 		}
-
-		checkIfRecording(millis);
 	}, 1);
-}
 
-const checkIfRecording = function(millis) {
-	if (recording) {
-		recordButton.id = 'recording';
-		recordButton.innerHTML = 'RECORDING';
-
-		// Piano keys events for triggering and terminating sounds.
-		piano.addEventListener('mousedown', (e) => {
-			timing = millis;
-		});
-	} else {
-		recordButton.id = 'record';
-		recordButton.innerHTML = 'RECORD';
-	}
+	// piano.addEventListener('mousedown', (e) => {
+	// 	timing = millis;
+	// });
 }
 
 const handleKeyPress = function(keyPressed) {
@@ -74,7 +64,11 @@ const handleKeyPress = function(keyPressed) {
 		synth.triggerAttack(keyPressed);
 		// console.log('Playing note: ' + keyPressed);
 
-		mouseDownStartTime = Date.now();
+		if (recording) {
+			// Sets time when key was pressed for recording.
+			timing = millis;
+			mouseDownStartTime = Date.now();
+		}
 	}
 }
 
@@ -96,7 +90,6 @@ const logKey = (note, timing, duration) => {
 		timing,
 		duration
 	});
-	console.log(notesPlayedLoop);
 }
 
 

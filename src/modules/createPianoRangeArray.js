@@ -20,7 +20,7 @@ var pianoRange = [],
     updatedNote = '',
     updatedLetter = '';
 
-export default function setPianoRangeSelectFields(startNote, endNote, musicalAlphabet) {
+export default function createPianoRangeArray(startNote, endNote, musicalAlphabet) {
   pianoRange = [startNote];
   currentOctave = startNote[1];
 
