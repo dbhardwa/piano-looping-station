@@ -1,66 +1,62 @@
 /*
   "Piano" Module:
-    - lorem ipsum
+    - creates piano and attaches appropriate events to produce sound.
+		- imports Recording for when recording state is active.
 */
 
-import createPianoRangeArray from "./createPianoRangeArray";
-import {
-  handleKeyPress,
-  handleRecord,
-  handleKeyRelease,
-  notesPlayedLoop
-} from "./events";
+import Recording from './Recording';
+import util from "../util";
 
 
 const Piano = {
 
   settings: {
+    piano: document.getElementById('piano'),
     pianoRange: [],
-		piano: document.getElementById('piano')
+    mousedown: false
   },
 
   init: function(startNote, endNote) {
-    this.settings.pianoRange = createPianoRangeArray(startNote, endNote);
+    this.settings.pianoRange = util.createPianoRangeArray(startNote, endNote);
 		this.render();
 		this.bindEvents();
   },
 
   bindEvents: function() {
-		let mousedown = false;
+    document.body.onmouseup = () => { this.settings.mousedown = false };
+    piano.onmousedown = () => { this.settings.mousedown = true };
 
-		this.settings.piano.onmousedown = (e) => {
-			mousedown = true;
-			e.target.classList.add('active');
-			handleKeyPress(e.target.id);
-		};
+    this.settings.piano.addEventListener('mousedown', (e) => this.handleKeyPress(e.target));
+		this.settings.piano.addEventListener('mouseup', this.handleKeyRelease);
 
-		document.body.onmouseup = () => { mousedown = false; }
-
-		this.settings.piano.onmouseup = (e) => {
-			e.target.classList.remove('active');
-			handleKeyRelease(e);
-		}
-
-
-		const pianoKeys = Array.from(document.getElementsByClassName('pianoKeys'));
+		let pianoKeys = Array.from(document.getElementsByClassName('pianoKeys'));
 
 		pianoKeys.forEach(pianoKey => {
 			pianoKey.onmouseleave = (e) => {
 				if (e.target.classList.contains('active')) {
 					e.target.classList.remove('active');
-					handleKeyRelease(e);
+					this.handleKeyRelease(e);
 				}
 
-				if (e.toElement && e.toElement.classList.contains('pianoKeys') && mousedown) {
-					e.toElement.classList.add('active');
-					handleKeyPress(e.toElement.id);
-				}
+				if (e.toElement && e.toElement.classList.contains('pianoKeys') && this.settings.mousedown)
+					this.handleKeyPress(e.toElement);
 			};
 		});
-
-
-
 	},
+
+  handleKeyPress: function(target) {
+    target.classList.add('active');
+		util.synth.triggerAttack(target.id);
+
+    Recording.startTime();
+  },
+
+  handleKeyRelease: function(e) {
+    e.target.classList.remove('active');
+		util.synth.triggerRelease();
+
+    Recording.endTime(e);
+  },
 
   render: function() {
 		let pianoKeys = ``;
