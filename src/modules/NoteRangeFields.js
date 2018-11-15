@@ -14,7 +14,7 @@ const NoteRangeFields = {
     musicalAlphabet: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
     noteRangeOptions: [],
     startNote: 'C4',
-    endNote: 'B5'
+    endNote: 'B6'
   },
 
   init: function() {

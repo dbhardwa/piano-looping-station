@@ -33,10 +33,8 @@ const Piano = {
 
 		pianoKeys.forEach(pianoKey => {
 			pianoKey.onmouseleave = (e) => {
-				if (e.target.classList.contains('active')) {
-					e.target.classList.remove('active');
+				if (e.target.classList.contains('active'))
 					this.handleKeyRelease(e);
-				}
 
 				if (e.toElement && e.toElement.classList.contains('pianoKeys') && this.settings.mousedown)
 					this.handleKeyPress(e.toElement);
@@ -48,7 +46,7 @@ const Piano = {
     target.classList.add('active');
 		util.synth.triggerAttack(target.id);
 
-    Recording.startTime();
+    Recording.startTime(/* target.id, this.settings.mousedown */);
   },
 
   handleKeyRelease: function(e) {
@@ -68,7 +66,15 @@ const Piano = {
         pianoKeys += `<div class="whiteKey pianoKeys" id="${currentNote}"></div> \n`;
     });
 
+    // Filler key needed for whitespace in overflow.
+    pianoKeys += `<div id="filler" class="whiteKey pianoKeys"></div>`;
+
 		this.settings.piano.innerHTML = pianoKeys;
+
+    // Removes the filler element when the piano doesn't overflow.
+    if (!(this.settings.piano.scrollWidth > this.settings.piano.clientWidth)) {
+      document.getElementById('filler').style.display = 'none';
+    }
   }
 
 }

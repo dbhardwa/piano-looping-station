@@ -3,6 +3,8 @@
     - handles logging of keys pressed based on note, time, and duration when recording state is active.
 */
 
+import MIDIVisualizer from "./MIDIVisualizer";
+import PlayBack from "./PlayBack";
 
 const Recording = {
 
@@ -15,7 +17,12 @@ const Recording = {
     isRecording: false,
     notesPlayedLoop: [],
     millis: 0,
-    time: 0
+
+    time: 0,
+
+    // Edge case variables
+    note: '',
+    mousedown: false
   },
 
   init: function() {
@@ -48,7 +55,7 @@ const Recording = {
   			clearInterval(timer);
   			this.settings.isRecording = false;
   			this.settings.recordIcon.classList.remove('blinking');
-  			console.log(this.settings.notesPlayedLoop);
+        this.handleNotesPlayedLoop();
   		}
   	}, 1);
   },
@@ -71,6 +78,13 @@ const Recording = {
       time,
       duration
     });
+  },
+
+  handleNotesPlayedLoop: function() {
+    // console.log(this.settings.notesPlayedLoop);
+
+    MIDIVisualizer.getData(this.settings.notesPlayedLoop);
+    PlayBack.getData(this.settings.notesPlayedLoop)
   },
 
   render: function() {}

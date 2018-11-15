@@ -8,30 +8,31 @@ import * as d3 from 'd3';
 import util from "../util";
 
 
-const sampleData = [
-  {
-    note: "F#4",
-    time: 4000,
-    duration: 679
-  },
-  {
-    note: "A4",
-    time: 6295,
-    duration: 75
-    // 4295 + 75 -> that is the time it turns off
-  },
-  {
-    note: "B4",
-    time: 9000,
-    duration: 1000
-  }
-];
+// const sampleData = [
+//   {
+//     note: "F#4",
+//     time: 4000,
+//     duration: 679
+//   },
+//   {
+//     note: "A4",
+//     time: 6295,
+//     duration: 75
+//     // 4295 + 75 -> that is the time it turns off
+//   },
+//   {
+//     note: "B4",
+//     time: 9000,
+//     duration: 1000
+//   }
+// ];
 
 
 const MIDIVisualizer = {
 
   settings: {
     pianoRangeArray: [],
+    notesPlayedLoop: [],
 
     svgWidth: 800,
     svgHeight: 1200,
@@ -51,12 +52,25 @@ const MIDIVisualizer = {
 
   bindEvents: function() {},
 
+  getData: function(notesPlayedLoop) {
+    // Gets the notesPlayedLoop array with key log data from Recording module.
+    this.settings.notesPlayedLoop = notesPlayedLoop;
+    console.log(this.settings.notesPlayedLoop);
+
+    this.render();
+  },
+
   render: function() {
     let svgWidth = this.settings.svgWidth,
         svgHeight = this.settings.svgHeight,
         padding = this.settings.padding;
 
+    let sampleData = this.settings.notesPlayedLoop;
+
+    document.getElementById('loopingStation').innerHTML = '';
+
     let svg = d3.select('#loopingStation')
+                // .selectAll('*').remove()
                 .append('svg')
                 .attr('width', svgWidth /* + margin.left + margin.right */)
                 .attr('height', svgHeight /* + margin.top + margin.bottom */);

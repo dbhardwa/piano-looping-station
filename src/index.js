@@ -12,7 +12,7 @@ const blackHotKeys = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '['];
 
 // Initializes modules.
 const init = function() {
-  NoteRangeFields.init(/* startNote, endNote */);
+  NoteRangeFields.init();
   Recording.init();
   MIDIVisualizer.init();
   PlayBack.init();

@@ -11,7 +11,8 @@ const PlayBack = {
 
   settings: {
     playButton: document.getElementById('play'),
-    timeDisplay: document.getElementById('time')
+    timeDisplay: document.getElementById('time'),
+    notesPlayedLoop: []
   },
 
   init: function() {
@@ -21,7 +22,17 @@ const PlayBack = {
   },
 
   bindEvents: function() {
-    this.settings.playButton.addEventListener('click', this.handlePlayBack);
+    this.settings.playButton.addEventListener('click', this.handlePlayBack.bind(this));
+  },
+
+  getData: function(notesPlayedLoop) {
+    notesPlayedLoop.forEach(recordedNote => {
+      this.settings.notesPlayedLoop.push({
+        note: recordedNote.note,
+        time: recordedNote.time / 1000,
+        duration: recordedNote.duration / 1000
+      });
+    });
   },
 
   handleTimer: function() {
@@ -33,18 +44,22 @@ const PlayBack = {
 
 
 
-    
-    var part = new Tone.Part((time, event) => {
+    let notesPlayedLoop = this.settings.notesPlayedLoop;
+    let part = new Tone.Part((time, event) => {
       util.synth.triggerAttackRelease(event.note, event.duration, time)
-    }, [
-      {note: 'C4', time: 0,  duration: 2},
-      {note: 'C5', time: 3.563, duration: 2},
-      {note: 'C6', time: 6, duration: 2},
-    ]);
+    }, notesPlayedLoop);
+
+    // [
+    //   {note: 'C4', time: 0,  duration: 2},
+    //   {note: 'C5', time: 3.563, duration: 2},
+    //   {note: 'C6', time: 6, duration: 2},
+    // ]);
 
     part.start(0);
 
     Tone.Transport.start('+0.1');
+
+    // part.loop = 3;
 
 
     // var part = new Tone.Part((time, event) => {

@@ -1,13 +1,10 @@
 $font-stack: Helvetica, sans-serif;
 $font-color: #5B5B5B;
 
-$primary-color: black;
-
 $red-recording-color: #FF7171;
-
-
-$white-keys-color: #f3f3f3;
+$white-keys-color: #FBFBFB;
 $black-keys-color: #777777;
+
 
 body {
   font: 100% $font-stack;
@@ -15,15 +12,17 @@ body {
 }
 
 header {
+  margin: 1em 5% 2em 5%;
+
   h1 {
     font-weight: bold;
-    font-size: 2em;
+    font-size: 3em;
     margin: 0;
   }
 
   h2 {
     font-weight: lighter;
-    font-size: 1em;
+    font-size: 1.1em;
     margin: 0;
   }
 
@@ -32,103 +31,114 @@ header {
   }
 }
 
-svg {
-  // margin: 2em 5%;
-}
-
 #synthesizer {
-
   user-select: none;
-
-  border: 1px solid #696969;
-  padding: 1em;
-  max-height: 16em;
+  // border: 1px solid #696969;
+  // padding: 1em;
+  // height: 20em;
   margin: 2em 5%;
+
+
+  justify-content: center;
+  align-items: center;
+
   display: flex;
-  // flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
+  flex-wrap: nowrap;
+  // overflow-x: auto;
+  // overflow-y: hidden;
+  // align-items: center;
 
   #piano {
     position: relative;
     display: inline-block;
-    // max-width: 80%;
     max-height: 17em;
+
     display: flex;
     flex-wrap: nowrap;
-    // flex-direction: row;
-    // overflow-y: none;
-    // overflow-x: auto;
-    // white-space: nowrap;
+    overflow: scroll;
+
+
+    border: 1px solid $black-keys-color;
+    padding: 1em;
+    width: fit-content;
+
+    .pianoKeys {
+      position: relative;
+      float: left;
+    }
+
+    .pianoKeys:first-child {
+      margin-left: 0.1em !important;
+    }
+
+    .whiteKey {
+      height: 16em;
+      min-width: 3.5em;
+      z-index: 1;
+      border: 1px solid $black-keys-color;
+      border-radius: 0 0 15px 15px;
+      background: $white-keys-color;
+    }
+
+    #filler {
+      visibility: hidden !important;
+      min-width: 1em !important;
+    }
+
+    .blackKey {
+      height: 10em;
+      min-width: 2em;
+      margin: 0 0 0 -1em;
+      z-index: 2;
+      border-radius: 0 0 10px 10px;
+      background: $black-keys-color;
+    }
+
+    .pianoKeys[id*='G'],
+    .pianoKeys[id*='A'],
+    .pianoKeys[id*='E'],
+    .pianoKeys[id*='D'],
+    .pianoKeys[id*='B'] {
+      margin: 0 0 0 -1em;
+    }
+
+    .whiteKey:hover, .blackKey:hover {
+      background-color: #AFCBFF;
+    }
+
+    .active {
+      background-color: #72A5FF !important;
+    }
   }
 
   #control-panel {
+    // flex: 0 0 0 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // vertical-align: middle;
+    // display: table-cell;
+
+    float: right;
+
     border: 1px solid $black-keys-color;
     padding: 1em;
     width: 4em;
-    height: 14em;
-    // float: right;
+    // width: 8%;
+    height: 16.1em;
     // display: inline-block;
-    margin: 0em 1em;
+    margin: 0 0 0 1em;
+
+    select {
+      font-size: 1em;
+      width: 4em;
+      border: 0;
+      outline: 1px solid #848484;
+      text-align-last: center;
+      margin: 0.5em 0;
+      height: 1.5em;
+    }
   }
-
-}
-
-
-.pianoKeys {
-  position: relative;
-  float: left;
-}
-
-// not c or f....
-.pianoKeys[id*='G'],
-.pianoKeys[id*='A'],
-.pianoKeys[id*='E'],
-.pianoKeys[id*='D'],
-.pianoKeys[id*='B'] {
-  margin: 0 0 0 -1em;
-}
-
-
-.whiteKey {
-  // margin:0 0 0 -1em;
-  // background-color: $white-keys-color;
-  // height: 200px;
-  // width: 50px;
-  // border: 1px solid black;
-  // display: inline-block;
-  // border-radius: 0px 0px 10px 10px;
-  // margin-right: -7px;
-
-  height: 16em;
-  width: 3.5em;
-  z-index: 1;
-  // border-left: 1px solid #777777;
-  // border-bottom: 1px solid #777777;
-  border: 1px solid #777777;
-  border-radius: 0 0 15px 15px;
-  background: #FBFBFB;
-}
-
-.blackKey {
-  height: 10em;
-  width: 2em;
-  margin: 0 0 0 -1em;
-  z-index: 2;
-  border-radius: 0 0 10px 10px;
-  background: $black-keys-color;
-}
-
-.whiteKey:hover, .blackKey:hover {
-  background-color: #AFCBFF;
-}
-
-// .whiteKey:active, .blackKey:active {
-//   background-color: #72A5FF;
-// }
-
-.active {
-  background-color: #72A5FF !important;
 
 }
 
@@ -156,23 +166,14 @@ button:hover {
 }
 
 #loopingStation {
-  // margin: 2em;
   margin: 2em 5%;
-  border: 1px solid #696969;
+  border: 1px solid $black-keys-color;
   max-height: 20em;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: auto;
 }
-
-// .loopControls {
-//   width: 40px;
-//   height: 40px;
-//   display: inline-block;
-// }
 
 #loopControls {
   margin: 2em 5%;
-
 
   button {
     width: 40px;
